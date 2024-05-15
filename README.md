@@ -13,5 +13,7 @@
 
 ## Building & Running the Project
 
+Create a `.env` file with PORT=3000
+
 - To run in development/live reload use `npm run dev`
 - To run a production build use `npm run start`
