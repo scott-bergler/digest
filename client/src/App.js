@@ -1,26 +1,74 @@
-import React from 'react';
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import React, { useState, useEffect } from "react";
+import { GoogleLogin, useGoogleLogin, googleLogout } from "@react-oauth/google";
+import SignOut from "./SignOut";
+import axios from "axios";
 
 function App() {
-  console.log("process.env.REACT_APP_GOOGLE_CLIENT_ID", process.env.REACT_APP_GOOGLE_CLIENT_ID)
-  const { signIn } = useGoogleLogin({
-    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-    onSuccess: (response) => {
-      console.log('Google sign-in successful', response);
-    },
-    onError: (error) => {
-      console.error('Google sign-in error', error);
-    },
-    onLoading: () => {
-      console.log('Google sign-in loading');
-    },
+  const [user, setUser] = useState();
+  const [profile, setProfile] = useState();
+
+  const signIn = useGoogleLogin({
+    onSuccess: (response) => setUser(response),
+    onError: (error) => console.error("Google sign-in error", error),
   });
+  useEffect(() => {
+    console.log("user", user);
+    if (user) {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setProfile(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+  };
 
   return (
     <div>
-      <GoogleLogin onClick={signIn} />
+      <h2>React Google Login</h2>
+      <br />
+      <br />
+      {profile ? (
+        <div>
+          <img src={profile.picture} alt="user image" />
+          <h3>User Logged in</h3>
+          <p>Name: {profile.name}</p>
+          <p>Email Address: {profile.email}</p>
+          <br />
+          <br />
+          <button onClick={logOut}>Log out</button>
+        </div>
+      ) : (
+        <button onClick={() => signIn()}>Sign in with Google 🚀 </button>
+      )}
     </div>
   );
 }
 
+// <div>
+//   <h3>wtf</h3>
+//   <button onClick={googleLogout}>pickles are cucumbers</button>
+//   <GoogleLogin
+//     onClick={signIn}
+//     // onSuccess={(credentialResponse) => {
+//     //   console.log(credentialResponse);
+//     // }}
+//     // onError={() => {
+//     //   console.log("Login Failed");
+//     // }}
+//   />
+//   <div></div>
+// </div>
 export default App;
