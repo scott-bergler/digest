@@ -57,18 +57,4 @@ function App() {
   );
 }
 
-// <div>
-//   <h3>wtf</h3>
-//   <button onClick={googleLogout}>pickles are cucumbers</button>
-//   <GoogleLogin
-//     onClick={signIn}
-//     // onSuccess={(credentialResponse) => {
-//     //   console.log(credentialResponse);
-//     // }}
-//     // onError={() => {
-//     //   console.log("Login Failed");
-//     // }}
-//   />
-//   <div></div>
-// </div>
 export default App;
