@@ -1,1 +1,1 @@
-export let users: any = []
+export let users: any[] = []

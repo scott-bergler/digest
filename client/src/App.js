@@ -6,13 +6,17 @@ import axios from "axios";
 function App() {
   const [user, setUser] = useState();
   const [profile, setProfile] = useState();
-
+  const handleLogin = async (googleAuthUser) => {
+    setUser(googleAuthUser)
+    getProfile()
+    await axios.post("http://localhost:3000/users", profile)
+  }
   const signIn = useGoogleLogin({
-    onSuccess: (response) => setUser(response),
+    onSuccess: (response) => handleLogin(response),
     onError: (error) => console.error("Google sign-in error", error),
   });
-  useEffect(() => {
-    console.log("user", user);
+  const getProfile = () => {
+    console.log("PROFILE", profile);
     if (user) {
       axios
         .get(
@@ -28,8 +32,9 @@ function App() {
           setProfile(res.data);
         })
         .catch((err) => console.log(err));
+      }
     }
-  }, [user]);
+  useEffect(getProfile, [user]);
   const logOut = () => {
     googleLogout();
     setProfile(null);
