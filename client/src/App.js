@@ -4,16 +4,10 @@ import SignOut from "./SignOut";
 import axios from "axios";
 
 function App() {
-  const [user, setUser] = useState();
   const [profile, setProfile] = useState();
   const handleLogin = async (googleAuthUser) => {
-    // setUser(googleAuthUser);
     await getProfile(googleAuthUser);
     console.log("PROFILE", profile);
-    await axios.post("http://localhost:3001/users", {
-      profile,
-      message: "two",
-    });
   };
   const signIn = useGoogleLogin({
     onSuccess: (response) => handleLogin(response),
@@ -31,14 +25,13 @@ function App() {
             },
           }
         )
-        .then((res) => {
-          console.log(res.data);
-          setProfile(res.data);
+        .then(async (res) => {
+          const user = (await axios.post("http://localhost:3001/users", res.data)).data;
+          setProfile(user);
         })
         .catch((err) => console.log(err));
     }
   };
-  // useEffect(getProfile, [profile]);
   const logOut = () => {
     googleLogout();
     setProfile(null);

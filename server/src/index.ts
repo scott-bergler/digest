@@ -15,15 +15,15 @@ app.get("/users", (req: Request, res: Response) => {
   res.json(users)
 })
 app.post("/users", (req: Request, res: Response) => {
-  console.log("REQUEST", req.body)
   const user = req.body
-  const userFound = users.find(() => user.message === "two")
+  const userFound = users.find((usr) => usr.email === user.email)
   if (!userFound) {
     users.push(user)
+    console.log(users)
+    return res.json(user)
   }
-  res.json(users)
+  return res.json(userFound)
 })
-
 
 app.listen(port, () => {
   console.info(`Express API server listening on port: ${port}`);
