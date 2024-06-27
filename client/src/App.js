@@ -7,34 +7,38 @@ function App() {
   const [user, setUser] = useState();
   const [profile, setProfile] = useState();
   const handleLogin = async (googleAuthUser) => {
-    setUser(googleAuthUser)
-    getProfile()
-    await axios.post("http://localhost:3000/users", profile)
-  }
+    // setUser(googleAuthUser);
+    await getProfile(googleAuthUser);
+    console.log("PROFILE", profile);
+    await axios.post("http://localhost:3001/users", {
+      profile,
+      message: "two",
+    });
+  };
   const signIn = useGoogleLogin({
     onSuccess: (response) => handleLogin(response),
     onError: (error) => console.error("Google sign-in error", error),
   });
-  const getProfile = () => {
-    console.log("PROFILE", profile);
-    if (user) {
+  const getProfile = async (googleAuthUser) => {
+    if (googleAuthUser) {
       axios
         .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${googleAuthUser.access_token}`,
           {
             headers: {
-              Authorization: `Bearer ${user.access_token}`,
+              Authorization: `Bearer ${googleAuthUser.access_token}`,
               Accept: "application/json",
             },
           }
         )
         .then((res) => {
+          console.log(res.data);
           setProfile(res.data);
         })
         .catch((err) => console.log(err));
-      }
     }
-  useEffect(getProfile, [user]);
+  };
+  // useEffect(getProfile, [profile]);
   const logOut = () => {
     googleLogout();
     setProfile(null);
@@ -47,7 +51,7 @@ function App() {
       <br />
       {profile ? (
         <div>
-          <img src={profile.picture} alt="user image" />
+          <img src={profile.picture} alt="profile.username" />
           <h3>User Logged in</h3>
           <p>Name: {profile.name}</p>
           <p>Email Address: {profile.email}</p>
