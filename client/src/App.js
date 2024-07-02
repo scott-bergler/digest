@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { GoogleLogin, useGoogleLogin, googleLogout } from "@react-oauth/google";
-import SignOut from "./SignOut";
+import React, { useState } from "react";
+import { useGoogleLogin, googleLogout } from "@react-oauth/google";
 import axios from "axios";
 
 function App() {
   const [profile, setProfile] = useState();
   const handleLogin = async (googleAuthUser) => {
     await getProfile(googleAuthUser);
-    console.log("PROFILE", profile);
   };
   const signIn = useGoogleLogin({
     onSuccess: (response) => handleLogin(response),
@@ -26,7 +24,9 @@ function App() {
           }
         )
         .then(async (res) => {
-          const user = (await axios.post("http://localhost:3001/users", res.data)).data;
+          const user = (
+            await axios.post("http://localhost:3001/users", res.data)
+          ).data;
           setProfile(user);
         })
         .catch((err) => console.log(err));
@@ -34,7 +34,7 @@ function App() {
   };
   const logOut = () => {
     googleLogout();
-    setProfile(null);
+    setProfile();
   };
 
   return (
@@ -44,7 +44,7 @@ function App() {
       <br />
       {profile ? (
         <div>
-          <img src={profile.picture} alt="profile.username" />
+          <img src={profile.picture} alt="user selected" />
           <h3>User Logged in</h3>
           <p>Name: {profile.name}</p>
           <p>Email Address: {profile.email}</p>
