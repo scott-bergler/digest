@@ -4,7 +4,7 @@ import cors from "cors";
 import {users} from "./dummy-data"
 const app: Express = express();
 dotenv.config();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 app.use(cors())
 app.use(express.json())
 
@@ -24,6 +24,14 @@ app.post("/users", (req: Request, res: Response) => {
     return res.json(user)
   }
   return res.json(userFound)
+})
+
+// TODO: create redirect callback endpoint
+app.get("/callback", (req: Request, res: Response) => {
+  console.log("CALLBACK RUN")
+  const { code } = req.query
+  console.log(req.query)
+  console.log(code)
 })
 
 app.listen(port, () => {
