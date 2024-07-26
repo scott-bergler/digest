@@ -1,9 +1,12 @@
 import * as dotenv from "dotenv";
 import express, { Express, Response, Request } from "express";
 import cors from "cors";
+import axios from 'axios'
+import url from 'url'
 import {users} from "./dummy-data"
-const app: Express = express();
+
 dotenv.config();
+const app: Express = express();
 const port = process.env.PORT || 3000;
 app.use(cors())
 app.use(express.json())
@@ -27,11 +30,33 @@ app.post("/users", (req: Request, res: Response) => {
 })
 
 // TODO: create redirect callback endpoint
-app.get("/callback", (req: Request, res: Response) => {
-  console.log("CALLBACK RUN")
+app.get("/callback", async (req: Request, res: Response) => {
+  console.log("CALLBACK RUN:", req.query)
   const { code } = req.query
-  console.log(req.query)
-  console.log(code)
+  if (code) {
+    try {
+      const formData = new url.URLSearchParams({
+        // TODO: Are there issues with declaring the envars as strings? Also, is this casting?
+        client_id: process.env.DISCORD_OAUTH_CLIENT_ID as string,
+        client_secret: process.env.DISCORD_OAUTH_SECRET as string,
+        grant_type: "authorization_code",
+        code: code.toString(),
+        redirect_uri: process.env.DISCORD_REDIRECT_URL as string
+      }) 
+      const response = await axios.post("https://discord.com/api/v8/oauth2/token",
+        formData.toString(),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        }
+      )
+      res.send(response.data)
+    } catch (error) {
+      console.log(error)
+      res.sendStatus(400)
+    }
+  }
 })
 
 app.listen(port, () => {
