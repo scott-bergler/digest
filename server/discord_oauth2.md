@@ -2,6 +2,10 @@
 ## Source
 - https://youtu.be/RP0P_zGdvj8?si=FsGn-2F_Id_l02KG
 - https://youtu.be/NtS5BkqS6M0?si=iir0TPZ-UkavnwKn
+# ChatGPT breakdown of Oauth2 terminology 
+- https://chatgpt.com/share/ac142de1-7a5c-45b8-933c-ccf781fe2b4c
+- Authorization server: discord's own server aka the middle person
+- Resource owner: this is the client who is giving us access to their data 
 
 ## Steps
 1. Discord Application (done)
@@ -14,4 +18,9 @@
  - Our server will then use the Access Token & Refresh Tokens to get the user's data according to the scopes we requested.
 
  
-
+### Tuesday's Next Steps 
+1. Save the access token to our dummy database 
+2. Save the refresh token to our dummy database
+3. Write an endpoint to get the users data from discord 
+   - This would require the access token 
+4. Write an endpoint to refresh the access token 
