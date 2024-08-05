@@ -3,7 +3,7 @@ import express, { Express, Response, Request } from "express";
 import cors from "cors";
 import axios from 'axios'
 import url from 'url'
-import {users} from "./dummy-data"
+import {users, discordAccessData} from "./dummy-data"
 
 dotenv.config();
 const app: Express = express();
@@ -52,12 +52,26 @@ app.get("/callback", async (req: Request, res: Response) => {
         }
       )
       res.send(response.data)
+      console.log(response.data["access_token"])
+      console.log(response.data["refresh_token"])
+      discordAccessData.accessToken = response.data["access_token"]
+      discordAccessData.refreshToken = response.data["refresh_token"]
     } catch (error) {
       console.log(error)
       res.sendStatus(400)
     }
   }
 })
+
+// GET USER DATA WITH ACCESS TOKEN HERE
+// Axios GET with headers "Bearer accessToken"
+
+// GET REQUEST TO REVOKE ACCESS HERE
+
+// GET REQUEST TO REFRESH ACCESS TOKEN HERE
+// Grant type "refresh_token"
+// (Not demo-ed in tutorial) so we'll need to figure out when & why to refresh
+// Probably has something to do with sessions
 
 app.listen(port, () => {
   console.info(`Express API server listening on port: ${port}`);
