@@ -4,6 +4,7 @@ import cors from "cors";
 import axios from 'axios'
 import url from 'url'
 import {users, discordAccessData} from "./dummy-data"
+import { error } from "console";
 
 dotenv.config();
 const app: Express = express();
@@ -60,12 +61,27 @@ app.get("/callback", async (req: Request, res: Response) => {
       console.log(error)
       res.sendStatus(400)
     }
+  } else {
+    res.sendStatus(500)
   }
 })
 
 // GET USER DATA WITH ACCESS TOKEN HERE
 // Axios GET with headers "Bearer accessToken"
-
+// Remember to update to a more meaningful url 
+app.get("/exchange", async (req: Request, res: Response)=> {
+  try {
+    const response = await axios.get("https://discord.com/api/v8/users/@me", {
+    headers: {"Authorization":` Bearer ${discordAccessData.accessToken}`}
+  })
+  console.log(response.data)
+  res.send(response.data)
+  } catch(error){
+  console.log(error)
+  res.sendStatus(400)
+  }
+  
+})
 // GET REQUEST TO REVOKE ACCESS HERE
 
 // GET REQUEST TO REFRESH ACCESS TOKEN HERE
