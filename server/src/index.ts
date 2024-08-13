@@ -2,12 +2,32 @@ import * as dotenv from "dotenv";
 import express, { Express, Response, Request } from "express";
 import cors from "cors";
 import routes from './routes'
+import { DataSource } from "typeorm";
 
 dotenv.config();
+const port = process.env.PORT || 3000;
 
 async function main() {
   const app: Express = express();
-  const port = process.env.PORT || 3000;
+  const myDataSource = new DataSource({
+    type: "mysql",
+    host: "localhost",
+    port: 3306,
+    username: "test",
+    password: "test1234",
+    database: "discord_oauth2_db",
+    entities: [],
+    logging: true,
+    synchronize: true,
+})
+myDataSource
+  .initialize()
+  .then(() => {
+    console.log("Data Source has been initialized")
+  }).catch((err) => {
+    console.error("This sucks it really really sucks", err)
+  })
+
   app.use(cors())
   app.use(express.json())
   app.use('/api', routes)
