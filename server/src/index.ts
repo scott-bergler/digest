@@ -3,6 +3,7 @@ import express, { Express, Response, Request } from "express";
 import cors from "cors";
 import routes from './routes'
 import { DataSource } from "typeorm";
+import {User} from './typeorm/entities/User'
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -16,30 +17,29 @@ async function main() {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    entities: [],
+    entities: [User],
     logging: true,
     synchronize: true,
 })
-myDataSource
-  .initialize()
-  .then(() => {
+  try{
+    await myDataSource.initialize()
     console.log("Data Source has been initialized")
-  }).catch((err) => {
+    app.use(cors())
+    app.use(express.json())
+    app.use('/api', routes)
+
+    app.get("/", (req: Request, res: Response) => {
+      res.send("Hello, Elise!!!");
+    });
+    
+    app.listen(port, () => {
+      console.info(`Express API server listening on port: ${port}`);
+    });
+  } catch (err) {
     console.error("This sucks it really really sucks", err)
-  })
-
-  app.use(cors())
-  app.use(express.json())
-  app.use('/api', routes)
-
-  app.get("/", (req: Request, res: Response) => {
-    res.send("Hello, Elise!!!");
-  });
-  
-  app.listen(port, () => {
-    console.info(`Express API server listening on port: ${port}`);
-  });
+  }
 }
+
 
 main();
 

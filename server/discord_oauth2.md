@@ -24,3 +24,8 @@
 3. Write an endpoint to get the users data from discord 
    - This would require the access token 
 4. Write an endpoint to refresh the access token 
+
+### mySQL commands 
+- describe `table name` -> display all columns in table 
+- use `db name here`
+- show tables -> display all tables in database  
