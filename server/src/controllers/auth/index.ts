@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import axios from 'axios'
 import url from 'url'
 import { discordAccessData } from "../../dummy-data";
+import { exchangeAccessCodeForCredentials } from "../../services/auth";
 
 export async function authDiscordRedirectController(
   req: Request,
@@ -9,23 +10,14 @@ export async function authDiscordRedirectController(
 ) {
   const { code } = req.query
   if (code) {
-    try {
-      const formData = new url.URLSearchParams({
-        // TODO: Are there issues with declaring the envars as strings? Also, is this casting?
-        client_id: process.env.DISCORD_OAUTH_CLIENT_ID as string,
-        client_secret: process.env.DISCORD_OAUTH_SECRET as string,
-        grant_type: "authorization_code",
-        code: code.toString(),
-        redirect_uri: process.env.DISCORD_REDIRECT_URL as string
-      }) 
-      const response = await axios.post("https://discord.com/api/v8/oauth2/token",
-        formData.toString(),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }
-      )
+    try { 
+     const response = await exchangeAccessCodeForCredentials({
+      client_id: process.env.DISCORD_OAUTH_CLIENT_ID as string,
+      client_secret: process.env.DISCORD_OAUTH_SECRET as string,
+      grant_type: "authorization_code",
+      code: code.toString(),
+      redirect_uri: process.env.DISCORD_REDIRECT_URL as string
+    })
       res.send(response.data)
       console.log(response.data["access_token"])
       console.log(response.data["refresh_token"])
