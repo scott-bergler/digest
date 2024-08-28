@@ -8,13 +8,7 @@ const {
   ENCRYPT_SECRET,
 } = process.env;
 
-export const buildOAuth2RequestPayload = (data: OAuth2ExchangeRequestParams) => new url.URLSearchParams({
-  client_id: DISCORD_OAUTH_CLIENT_ID || '',
-  client_secret: DISCORD_OAUTH_SECRET || '',
-  grant_type: 'authorization_code',
-  redirect_uri: DISCORD_REDIRECT_URL || '',
-  code: '',
-}).toString();
+export const buildOAuth2RequestPayload = (data: OAuth2ExchangeRequestParams) => new url.URLSearchParams(data).toString();
 
 export const authHeaders = (accessToken: string): AxiosRequestConfig =>({
   headers: {

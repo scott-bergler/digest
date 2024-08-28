@@ -2,28 +2,14 @@ import * as dotenv from "dotenv";
 import express, { Express, Response, Request } from "express";
 import cors from "cors";
 import routes from './routes'
-import { DataSource } from "typeorm";
-import {User} from './typeorm/entities/User'
 
 dotenv.config();
 const port = process.env.PORT || 3000;
 
 async function main() {
   const app: Express = express();
-  const myDataSource = new DataSource({
-    type: "mysql",
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT || 3306),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    entities: [User],
-    logging: true,
-    synchronize: true,
-})
-  try{
-    await myDataSource.initialize()
-    console.log("Data Source has been initialized")
+  
+  try {
     app.use(cors())
     app.use(express.json())
     app.use('/api', routes)
@@ -36,10 +22,9 @@ async function main() {
       console.info(`Express API server listening on port: ${port}`);
     });
   } catch (err) {
-    console.error("This sucks it really really sucks", err)
+    console.error("App setup in src/index failed.", err)
   }
 }
-
 
 main();
 

@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import axios from 'axios'
-import url from 'url'
 import { discordAccessData } from "../../dummy-data";
-import { exchangeAccessCodeForCredentials } from "../../services/auth";
+import { createUser, exchangeAccessCodeForCredentials, getDiscordUserDetails } from "../../services/auth";
 
 export async function authDiscordRedirectController(
   req: Request,
@@ -18,11 +17,11 @@ export async function authDiscordRedirectController(
       code: code.toString(),
       redirect_uri: process.env.DISCORD_REDIRECT_URL as string
     })
-      res.send(response.data)
-      console.log(response.data["access_token"])
-      console.log(response.data["refresh_token"])
-      discordAccessData.accessToken = response.data["access_token"]
-      discordAccessData.refreshToken = response.data["refresh_token"]
+      const { access_token, refresh_token } = response.data
+      const { data: user} = await getDiscordUserDetails(access_token)
+      const { id } = user
+      await createUser({discordId: id, accessToken: access_token, refreshToken: refresh_token})
+      res.send(user)
     } catch (error) {
       console.log(error)
       res.sendStatus(400)
