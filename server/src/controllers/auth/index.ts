@@ -20,8 +20,8 @@ export async function authDiscordRedirectController(
       const { access_token, refresh_token } = response.data
       const { data: user} = await getDiscordUserDetails(access_token)
       const { id } = user
-      await createUser({discordId: id, accessToken: access_token, refreshToken: refresh_token})
-      res.send(user)
+      const newUser = await createUser({discordId: id, accessToken: access_token, refreshToken: refresh_token})
+      res.send(newUser)
     } catch (error) {
       console.log(error)
       res.sendStatus(400)

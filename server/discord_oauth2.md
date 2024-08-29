@@ -28,4 +28,9 @@
 ### mySQL commands 
 - describe `table name` -> display all columns in table 
 - use `db name here`
-- show tables -> display all tables in database  
+- show tables -> display all tables in database
+
+## TODO for Tuesday
+- save User to DB on login
+- save Discord data related to our User when they authorize
+- figure out sessions

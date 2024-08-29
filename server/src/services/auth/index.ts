@@ -18,6 +18,12 @@ export async function getDiscordUserDetails(accessToken:string) {
 }
 
 export async function createUser(params: CreateUserParams) {
+  const dbUser = userRepo.findOne({
+      where: {
+          discordId: params.discordId,
+      },
+  })
+  if (dbUser) return dbUser
   const newUser = userRepo.create(params)
-  userRepo.save(newUser)
+  return userRepo.save(newUser)
 }
