@@ -1,8 +1,14 @@
 import axios from 'axios';
-import { OAuth2ExchangeRequestParams, DISCORD_API_ROUTES, DiscordOAuth2CredentialResponse, DiscordOAuth2UserResponse, CreateUserParams } from '../../utils/types'
-import { authHeaders, buildOAuth2RequestPayload } from '../../utils/helpers';
-import { axiosConfig } from '../../utils/constants';
-import { userRepo } from '../../data'
+import { 
+  DISCORD_API_ROUTES, 
+  OAuth2ExchangeRequestParams, 
+  DiscordOAuth2CredentialResponse, 
+  DiscordOAuth2UserResponse, 
+  CreateUserParams
+} from '../utils/types'
+import { authHeaders, buildOAuth2RequestPayload } from '../utils/helpers';
+import { axiosConfig } from '../utils/constants';
+import { userRepo } from '../data/data'
 
 export async function exchangeAccessCodeForCredentials(data: OAuth2ExchangeRequestParams) {
   const payload = buildOAuth2RequestPayload(data);

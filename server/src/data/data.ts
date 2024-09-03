@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import { DataSource } from 'typeorm'
-import { User } from './typeorm/entities/User'
+import { DiscordUser } from './DiscordUserEntity'
 dotenv.config();
 
 const mysqlDS = new DataSource({
@@ -10,7 +10,7 @@ const mysqlDS = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [User],
+  entities: [DiscordUser],
   logging: true,
   synchronize: true,
 })
@@ -25,4 +25,4 @@ mysqlDS
         console.error("Error during Data Source initialization:", error)
     })
 
-export const userRepo = mysqlDS.getRepository(User)
+export const userRepo = mysqlDS.getRepository(DiscordUser)

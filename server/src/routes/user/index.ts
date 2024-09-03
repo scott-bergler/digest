@@ -1,5 +1,5 @@
 import { Router, Response, Request } from "express";
-import { users } from "../../dummy-data"
+import { users } from "../../data/dummy-data"
 
 const router = Router();
 

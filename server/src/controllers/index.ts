@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import axios from 'axios'
-import { discordAccessData } from "../../dummy-data";
-import { createUser, exchangeAccessCodeForCredentials, getDiscordUserDetails } from "../../services/auth";
+import { discordAccessData } from "../data/dummy-data";
+import { createUser, exchangeAccessCodeForCredentials, getDiscordUserDetails } from "../services";
 
 export async function authDiscordRedirectController(
   req: Request,
@@ -39,30 +39,9 @@ export async function getAuthenticatedUserController(
     const response = await axios.get("https://discord.com/api/v8/users/@me", {
     headers: {"Authorization":` Bearer ${discordAccessData.accessToken}`}
   })
-    console.log(response.data)
     res.send(response.data)
   } catch(error){
     console.log(error)
     res.sendStatus(400)
   }
 }
-
-/* 
-  GET REQUEST TO REVOKE ACCESS HERE
-
-  GET REQUEST TO REFRESH ACCESS TOKEN HERE
-  Grant type "refresh_token"
-  (Not demo-ed in tutorial) so we'll need to figure out when & why to refresh
-  Probably has something to do with sessions
-
-  export async function revokeAccessTokenController(req: Request, res: Response) {
-    if (!req.user) return res.sendStatus(401);
-    try {
-      await revokeToken(req.user.accessToken);
-      res.sendStatus(200);
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(400);
-    } 
-  }
-*/
