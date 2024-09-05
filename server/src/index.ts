@@ -4,7 +4,7 @@ import cors from "cors";
 import routes from './routes'
 
 dotenv.config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 async function main() {
   const app: Express = express();

@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import { DataSource } from 'typeorm'
-import { DiscordUser } from './DiscordUserEntity'
+import { DiscordUser } from './entities'
 dotenv.config();
 
 const mysqlDS = new DataSource({
