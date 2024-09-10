@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import axios from 'axios'
 import { discordAccessData } from "../data/dummy-data";
-import { createUser, exchangeAccessCodeForCredentials, getDiscordUserDetails } from "../services";
+import { createAppUser, createDiscordUser, exchangeAccessCodeForCredentials, getDiscordUserDetails } from "../services";
 
 export async function authDiscordRedirectController(
   req: Request,
@@ -20,8 +20,8 @@ export async function authDiscordRedirectController(
       const { access_token, refresh_token } = response.data
       const { data: user} = await getDiscordUserDetails(access_token)
       const { id } = user
-      const newUser = await createUser({discordId: id, accessToken: access_token, refreshToken: refresh_token})
-      res.send(newUser)
+      const discordUser = await createDiscordUser({discordId: id, accessToken: access_token, refreshToken: refresh_token})
+      res.send(discordUser)
     } catch (error) {
       console.log(error)
       res.sendStatus(400)
@@ -31,7 +31,7 @@ export async function authDiscordRedirectController(
   }
 }
 
-// 
+// Not currently in use. May or may not be necessary.
 export async function getAuthenticatedDiscordUserController(
   req: Request,
   res: Response
@@ -45,4 +45,10 @@ export async function getAuthenticatedDiscordUserController(
     console.log(error)
     res.sendStatus(400)
   }
+}
+
+export async function userLoginController(req: Request, res: Response) {
+  const data = req.body
+  const appUser = await createAppUser({google_id: data.id, name: data.name, email: data.email})
+  res.send(appUser)
 }

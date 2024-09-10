@@ -39,7 +39,7 @@ export enum DISCORD_API_ROUTES {
     premium_type: number
   }
 
-  export type CreateUserParams = {
+  export type CreateDiscordUserParams = {
     discordId: string,
     accessToken: string,
     refreshToken: string

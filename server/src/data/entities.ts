@@ -23,8 +23,8 @@ export class AppUser {
     @Column({ name: 'email'})
     email: string
 
-    @Column({ name: 'full_name'})
-    full_name: string
+    @Column({ name: 'name'})
+    name: string
 
     @Column({name: 'google_id'})
     google_id: string

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authRoutes from "./auth";
+import authRoutes from "./discord";
 import userRoutes from "./user";
 
 const router = Router();
