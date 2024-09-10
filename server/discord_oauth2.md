@@ -6,31 +6,10 @@
 - https://chatgpt.com/share/ac142de1-7a5c-45b8-933c-ccf781fe2b4c
 - Authorization server: discord's own server aka the middle person
 - Resource owner: this is the client who is giving us access to their data 
-
-## Steps
-1. Discord Application (done)
-2. Get Client ID & Client Secret (done)
-3. Set redirect URL (done)
-4. Get OAuth2 URL from Discord generator (done)
- - This is the Discord URL our users will visit. Discord will tell the user the scopes we are requesting & ask them to either authorize or deny the application.
- - When the user clicks "Authorize" Discord redirects to our redirect URL including the Access Code as a query parameter.
- - Our server will take this code and exchange it for an Access Token. Discord will respond with the Access Token & a Refresh Token.
- - Our server will then use the Access Token & Refresh Tokens to get the user's data according to the scopes we requested.
-
- 
-### Tuesday's Next Steps 
-1. Save the access token to our dummy database 
-2. Save the refresh token to our dummy database
-3. Write an endpoint to get the users data from discord 
-   - This would require the access token 
-4. Write an endpoint to refresh the access token 
+# ChatGPT controller description (from MVC)
+https://chatgpt.com/c/66e08e38-bef4-8001-8cad-8787fa642d41
 
 ### mySQL commands 
 - describe `table name` -> display all columns in table 
 - use `db name here`
 - show tables -> display all tables in database
-
-## TODO for Tuesday
-- save User to DB on login
-- save Discord data related to our User when they authorize
-- figure out sessions

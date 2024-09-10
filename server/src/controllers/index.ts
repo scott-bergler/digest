@@ -31,7 +31,8 @@ export async function authDiscordRedirectController(
   }
 }
 
-export async function getAuthenticatedUserController(
+// 
+export async function getAuthenticatedDiscordUserController(
   req: Request,
   res: Response
 ) {

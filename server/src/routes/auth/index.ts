@@ -1,12 +1,12 @@
 import { Router } from "express";
 import {
   authDiscordRedirectController,
-  getAuthenticatedUserController,
+  getAuthenticatedDiscordUserController,
 } from "../../controllers";
 
 const router = Router();
 
 router.get("/discord/redirect", authDiscordRedirectController);
-router.get("/user", getAuthenticatedUserController);
+router.get("/discord/user", getAuthenticatedDiscordUserController);
 
 export default router;
