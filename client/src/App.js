@@ -24,8 +24,9 @@ function App() {
           }
         )
         .then(async (res) => {
+          console.log(res.data);
           const user = (
-            await axios.post("http://localhost:3001/users", res.data)
+            await axios.post("http://localhost:3001/api/users/users", res.data)
           ).data;
           setProfile(user);
         })
