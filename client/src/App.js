@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { useGoogleLogin, googleLogout } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import Settings from "./components/settings";
+import "./App.css";
+import AuthorizeDiscordBtn from "./components/AuthorizeDiscordBtn";
 
 function App() {
   const [profile, setProfile] = useState();
@@ -11,6 +14,7 @@ function App() {
     onSuccess: (response) => handleLogin(response),
     onError: (error) => console.error("Google sign-in error", error),
   });
+
   const getProfile = async (googleAuthUser) => {
     if (googleAuthUser) {
       axios
@@ -33,10 +37,6 @@ function App() {
         .catch((err) => console.log(err));
     }
   };
-  const logOut = () => {
-    googleLogout();
-    setProfile();
-  };
 
   return (
     <div>
@@ -44,14 +44,12 @@ function App() {
       <br />
       <br />
       {profile ? (
-        <div>
-          <img src={profile.picture} alt="user selected" />
-          <h3>User Logged in</h3>
-          <p>Name: {profile.name}</p>
-          <p>Email Address: {profile.email}</p>
-          <br />
-          <br />
-          <button onClick={logOut}>Log out</button>
+        <div className="main-container">
+          <Settings profile={profile} setProfile={setProfile} />
+          <div className="main-dash">
+            <h2>Right hand content</h2>
+            <AuthorizeDiscordBtn />
+          </div>
         </div>
       ) : (
         <button onClick={() => signIn()}>Sign in with Google 🚀 </button>
