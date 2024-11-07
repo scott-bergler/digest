@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
 import axios from 'axios'
 import { discordAccessData } from "../data/dummy-data";
-import { createAppUser, createDiscordUser, exchangeAccessCodeForCredentials, getDiscordUserDetails } from "../services";
+import { 
+  createAppUser, 
+  createDiscordUser, 
+  exchangeAccessCodeForCredentials, 
+  getDiscordUserDetails,
+  saveSession
+} from "../services";
 
 export async function authDiscordRedirectController(
   req: Request,
@@ -20,7 +26,11 @@ export async function authDiscordRedirectController(
       const { access_token, refresh_token } = response.data
       const { data: user} = await getDiscordUserDetails(access_token)
       const { id } = user
-      const discordUser = await createDiscordUser({discordId: id, accessToken: access_token, refreshToken: refresh_token})
+      const discordUser = await createDiscordUser({
+        discordId: id, 
+        accessToken: access_token, 
+        refreshToken: refresh_token
+      })
       res.redirect("http://localhost:3000/")
     } catch (error) {
       console.log(error)
@@ -49,6 +59,13 @@ export async function getAuthenticatedDiscordUserController(
 
 export async function userLoginController(req: Request, res: Response) {
   const data = req.body
-  const appUser = await createAppUser({google_id: data.id, name: data.name, email: data.email})
+  const appUser = await createAppUser({
+    google_id: data.id, 
+    name: data.name, 
+    email: data.email
+  })
+  // Save session info into DB
+  // Do we need to do the same in the browser?
+  await saveSession({user_id: 3456})
   res.send(appUser)
 }

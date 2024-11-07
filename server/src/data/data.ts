@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import { DataSource } from 'typeorm'
-import { DiscordUser, AppUser } from './entities'
+import { DiscordUser, AppUser, Session } from './entities'
 dotenv.config();
 
 const mysqlDS = new DataSource({
@@ -10,7 +10,7 @@ const mysqlDS = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [DiscordUser, AppUser],
+  entities: [DiscordUser, AppUser, Session],
   logging: true,
   synchronize: true,
 })
@@ -27,3 +27,4 @@ mysqlDS
 
 export const discordUserRepo = mysqlDS.getRepository(DiscordUser)
 export const appUserRepo = mysqlDS.getRepository(AppUser)
+export const sessionRepo = mysqlDS.getRepository(Session)

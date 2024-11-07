@@ -29,3 +29,12 @@ export class AppUser {
     @Column({name: 'google_id'})
     google_id: string
 }
+
+@Entity({ name: "sessions"})
+export class Session {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column({ name: "user_id"})
+    user_id: number
+}

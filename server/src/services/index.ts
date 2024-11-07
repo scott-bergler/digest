@@ -8,7 +8,8 @@ import {
 } from '../utils/types'
 import { authHeaders, buildOAuth2RequestPayload } from '../utils/helpers';
 import { axiosConfig } from '../utils/constants';
-import { discordUserRepo, appUserRepo } from '../data/data'
+import { discordUserRepo, appUserRepo, sessionRepo } from '../data/data'
+import { AppUser } from '../data/entities';
 
 export async function exchangeAccessCodeForCredentials(data: OAuth2ExchangeRequestParams) {
   const payload = buildOAuth2RequestPayload(data);
@@ -43,4 +44,18 @@ export async function createAppUser(params: any) {
   if (user) return user
   const newUser = appUserRepo.create(params)
   return appUserRepo.save(newUser)
+}
+
+export async function saveSession(params: any) {
+  console.log("saveSession Running")
+  const session = await sessionRepo.findOne({
+    where: {
+      user_id: params.userId
+    }
+  })
+  if (session) return session
+  const newSession = sessionRepo.create(params)
+  const whatsIsIt = await sessionRepo.save(newSession)
+  console.log("whatsIsIt", typeof whatsIsIt, whatsIsIt)
+  return sessionRepo.save(newSession)
 }
