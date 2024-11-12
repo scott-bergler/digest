@@ -27,7 +27,7 @@ export class AppUser {
     name: string
 
     @Column({name: 'google_id'})
-    google_id: string
+    googleId: string
 }
 
 @Entity({ name: "sessions"})
@@ -36,5 +36,5 @@ export class Session {
     id: number
 
     @Column({ name: "user_id"})
-    user_id: number
+    userId: number
 }

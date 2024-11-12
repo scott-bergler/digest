@@ -44,3 +44,13 @@ export enum DISCORD_API_ROUTES {
     accessToken: string,
     refreshToken: string
   }
+
+  export type CreateAppUserParams = {
+    email: string,
+    name: string,
+    googleId: string
+  }
+
+  export type CreateSessionParams = {
+    userId: number
+  }

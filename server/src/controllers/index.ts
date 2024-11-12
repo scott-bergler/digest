@@ -60,12 +60,11 @@ export async function getAuthenticatedDiscordUserController(
 export async function userLoginController(req: Request, res: Response) {
   const data = req.body
   const appUser = await createAppUser({
-    google_id: data.id, 
+    googleId: data.id, 
     name: data.name, 
     email: data.email
   })
-  // Save session info into DB
-  // Do we need to do the same in the browser?
-  await saveSession({user_id: 3456})
+  const session = await saveSession({userId: appUser.id})
+  console.log(session)
   res.send(appUser)
 }
